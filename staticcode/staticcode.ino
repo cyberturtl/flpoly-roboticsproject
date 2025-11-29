@@ -29,10 +29,27 @@ void setup() {
   servo03.attach(7); 
   servo04.attach(8); 
   servo05.attach(9); 
-  servo06.attach(10); 
+  servo06.attach(10);
+
+  // awake dance
+  servo06.write(130);
+  delay(1000);
+  servo06.write(70);
+  delay(1000);
+  servo06.write(130);
+  delay(1000);
+  servo06.write(70);
+  delay(1000);
+  servo06.write(130);
+  delay(1000);
+  servo06.write(70);
+  delay(1000);
+  servo06.write(130);
+  delay(1000);
+
   
   // Wait a moment for the motors to stiffen up
-  delay(1000);
+  delay(5000);
 }
 
 void loop() {
@@ -57,6 +74,7 @@ void loop() {
   slowMove(servo01, 180);
 
   // drop duck
+  delay(2000);
   servo06.write(130); // gripper
   delay(2000);
 }

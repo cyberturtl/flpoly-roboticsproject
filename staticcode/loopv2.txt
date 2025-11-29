@@ -1,0 +1,99 @@
+#include <Servo.h>
+
+// define the 6 servos connected to the arduino
+Servo servo01;
+Servo servo02;
+Servo servo03;
+Servo servo04;
+Servo servo05;
+Servo servo06;
+
+// SPEED SETTING: Higher number = Slower movement
+// 10 is fast, 50 is slow
+// this one only applies to the startup procedure 
+int moveSpeed = 30;
+
+void setup() {
+  // servos are attached to PWM pins 5 -> 10
+  servo01.attach(5); // Waist
+  servo02.attach(6); // Shoulder
+  servo03.attach(7); // Elbow
+  servo04.attach(8); // Wrist (roll)
+  servo05.attach(9); // Wrist (pitch)
+  servo06.attach(10); // Gripper
+  delay(2000);
+
+  // INITIAL POSITIONS
+  slowMove(servo01, 40); // Waist moves to 40
+  delay(200); // Small pause between movements looks more natural
+  
+  slowMove(servo02, 160); // Shoulder raises to 160
+  delay(200);
+
+  slowMove(servo03, 45); // Elbow raises to 45
+  delay(200);
+
+  slowMove(servo04, 90); // Wrist roll centers to 90
+  delay(200);
+
+  slowMove(servo05, 30); // Wrist pitch adjusts to 30
+  delay(200);
+
+  slowMove(servo06, 130); // Gripper opens to 130
+  moveSpeed = 10;
+  delay(5000);
+}
+
+void loop() {
+  // position to duck
+  slowMove(servo01, 40); // Move waist to 40
+  slowMove(servo05, 70); // Wrist pitch to 70
+  slowMove(servo02, 130); // Move shoulder to 130
+  slowMove(servo03, 85); // Elbow to 85
+  servo06.write(130); // Open Gripper (130)
+  delay(1000); // Pause before grabbing
+
+  // grab duck
+  servo06.write(70); // gripper
+  delay(1000);
+
+  // lift duck
+  slowMove(servo02, 180); // Shoulder up
+  slowMove(servo05, 130); // Wrist adjust
+  slowMove(servo03, 55);  // Elbow adjust
+
+  // turn around
+  slowMove(servo01, 180);
+
+  // drop duck
+  servo06.write(130); // gripper
+  delay(2000);
+}
+
+// function to move servos slowly
+void slowMove(Servo &myServo, int targetPos) {
+  int startPos = myServo.read(); // Get current position
+
+  // If we need to move UP (e.g. 0 to 90)
+  if (startPos < targetPos) {
+    for (int i = startPos; i <= targetPos; i++) {
+      myServo.write(i);
+      delay(moveSpeed); 
+    }
+  }
+  // If we need to move DOWN (e.g. 90 to 0)
+  else {
+    for (int i = startPos; i >= targetPos; i--) {
+      myServo.write(i);
+      delay(moveSpeed); 
+    }
+  }
+}
+
+// position to grab duck is (before closing gripper)
+  // s1 = 40
+  // s2 = 130
+  // s3 = 85
+  // s4 = 90
+  // s5 = 70
+  // s6 = 130

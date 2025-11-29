@@ -1,0 +1,15 @@
+#include <Servo.h>
+Servo s;
+void setup() {
+  s.attach(5);      // change to the pin you use
+  s.write(90);
+  delay(500);
+}
+void loop() {
+  s.write(0);
+  delay(1000);
+  s.write(90);
+  delay(1000);
+  s.write(180);
+  delay(1000);
+}

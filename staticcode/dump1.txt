@@ -1,0 +1,68 @@
+#include <Servo.h>
+
+Servo servo01;
+Servo servo02;
+Servo servo03;
+Servo servo04;
+Servo servo05;
+Servo servo06;
+
+// Adjust this to change speed! 
+// Higher number = Slower speed (e.g., 50 is slow, 10 is fast)
+int slowSpeed = 20; 
+
+void setup() {
+  servo01.attach(5); 
+  servo02.attach(6);
+  servo03.attach(7);
+  servo04.attach(8); 
+  servo05.attach(9);
+  servo06.attach(10);
+
+  // Initialize at home positions (same as Code 1)
+  servo01.write(40);
+  servo02.write(130);
+  servo03.write(85);
+  servo04.write(90);
+  servo05.write(70);
+  servo06.write(130);
+  
+  delay(1000); // Wait for initialization
+}
+
+void loop() {
+  // --- EXAMPLE PICK UP SEQUENCE (SLOW) ---
+  
+  // 1. Move Waist to 0 (From 40 to 0)
+  moveSlow(servo01, 40, 0);
+  delay(500);
+
+  // 2. Move Waist to 90 (From 0 to 90)
+  moveSlow(servo01, 0, 90);
+  delay(500);
+  
+  // 3. Move Waist to 180 (From 90 to 180)
+  moveSlow(servo01, 90, 180);
+  delay(1000);
+}
+
+// --- CUSTOM FUNCTION TO SLOW DOWN SERVOS ---
+// This mimics the logic found in Code 1 
+void moveSlow(Servo &myServo, int startPos, int endPos) {
+  
+  // If we need to go UP in value (e.g. 0 -> 90)
+  if (startPos < endPos) {
+    for (int i = startPos; i <= endPos; i++) {
+      myServo.write(i);
+      delay(slowSpeed); // The delay creates the slow speed effect
+    }
+  }
+  
+  // If we need to go DOWN in value (e.g. 180 -> 90)
+  else {
+    for (int i = startPos; i >= endPos; i--) {
+      myServo.write(i);
+      delay(slowSpeed);
+    }
+  }
+}
