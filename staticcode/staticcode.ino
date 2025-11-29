@@ -13,7 +13,14 @@ Servo servo06;
 // this one only applies to the startup procedure 
 int moveSpeed = 10;
 
+// Set to false by default, so the robot waits for a command
+bool loopRunning = false;
+
 void setup() {
+  // Start the Serial Monitor so we can send/receive commands
+  Serial.begin(9600);
+  Serial.println("Ready! Type 'START' to begin sequence, 'STOP' to pause.");
+
   // pre set positions
   servo01.write(40);   // Waist start pos
   servo02.write(160);  // Shoulder start pos
@@ -46,13 +53,33 @@ void setup() {
   delay(1000);
   servo06.write(130);
   delay(1000);
-
-  
-  // Wait a moment for the motors to stiffen up
-  delay(5000);
 }
 
 void loop() {
+  if (Serial.available() > 0) {
+    // Read the whole command until the newline character
+    String command = Serial.readStringUntil('\n');
+    command.trim(); // Remove any whitespace
+    command.toUpperCase(); // Convert to uppercase for easy matching
+    
+    if (command == "START") {
+      loopRunning = true;
+      Serial.println("--- SEQUENCE STARTED ---");
+    }
+    else if (command == "STOP") {
+      loopRunning = false;
+      Serial.println("--- SEQUENCE STOPPED ---");
+    }
+  }
+
+  // The loop only runs when the 'loopRunning' flag is true.
+  if (loopRunning) {
+    pickAndPlaceSequence();
+  }
+  // If loopRunning is false, the code simply checks for serial input very fast.
+}
+
+void pickAndPlaceSequence() {
   // position to duck
   slowMove(servo01, 40); // Move waist to 40
   slowMove(servo05, 70); // Wrist pitch to 70
