@@ -8,5 +8,7 @@ Our robotic arm was 3D printed using the design shared in this HowtoMechatronics
 
 # static code vs. mobile code
 static code is a simple arduino script which maps the servos of the robot arm to a currated loop of movements for picking up the duck and placing it into a box on its opposing side.
+
 mobile code is a an arduino script which takes advantage of the bluetooth capabilities of our setup and allows for control of the arm using the android app provided within the guide.
-- both of these scripts are arduino scripts and show be direct uploads to an arduino board of your choice.
+
+- both of these scripts are arduino scripts and show be direct uploads to an arduino board of your choice, look for the (.ino) files.
